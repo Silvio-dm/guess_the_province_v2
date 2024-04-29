@@ -8,7 +8,7 @@ function GuestPlayButton({ onPlayAsGuest }) {
     event.preventDefault(); // Evita il comportamento predefinito del form
     const guestName = document.getElementById('guestName').value;
     const provincesSelect = document.getElementById('provinces'); // ID dell'elemento select
-    const guest_button = document.getElementById('provinces').name;
+    
     const selectedProvince = provincesSelect.value;
     console.log(guestName);
    
@@ -17,7 +17,7 @@ function GuestPlayButton({ onPlayAsGuest }) {
     const response = await axios.post('http://localhost:3000/loginGuest', {
       guestName: guestName, 
       provinces: selectedProvince,
-      guest_button: guest_button,
+      
     });
   
     console.log('Guest login success! ' + response.data.town_to_guess);
@@ -34,8 +34,8 @@ function GuestPlayButton({ onPlayAsGuest }) {
   return (
     <div className="guest_player">
       <label htmlFor="guestName"><h2>Play as a Guest:</h2></label>
-      <input type="text" id="guestName" name="guestName" placeholder="Your name"></input>
-      <input type="submit" value="Submit" onClick={handleGuestPlay} id="guest_button" name="guest_button"></input>
+      <input type="text" id="guestName" name="guestName" placeholder="Your name"></input>      
+      <button type="submit"  value="Submit" className="province_button" id="guest_button" name="guest_button" onClick={handleGuestPlay}>Play as a Guest:</button>
     </div>
   );
 }

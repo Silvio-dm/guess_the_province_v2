@@ -86,7 +86,7 @@ function shuffleArray(array) {
 
 
 async function buildProvinces(){
-  provinces=[];
+  //provinces=[];
   
   try {
     
@@ -183,14 +183,14 @@ function checkLogin(name, pw){
 
 */
 async function checkLogin(name, pw) {
-  console.log("Io sono all'inizio di checkLogin" + name + " "+pw);
+  console.log("Io sono all'inizio di checkLogin. Il nickname è " + name + ". La password è "+pw);
   try {
     
     const db = await pool.connect();
     const res = await db.query("SELECT * FROM users WHERE userid = $1 AND pwhash = $2;", [name, pw]);
     db.release();
     if (res.rows.length > 0) {
-      console.log("Login corretto. Benvenuto, " + res.rows[0].userid);
+      console.log("Io sono in checkLogin. Login corretto. Benvenuto, " + res.rows[0].userid);
       guestName = name;
       userRecord = res.rows[0].record;
       loggedIn = true;
@@ -208,31 +208,6 @@ async function checkLogin(name, pw) {
 }
 
 
-app.post("/loginGuest", async (req, res) =>{
-  try {
-    score = 0;
-    //console.log(number_of_answers);
-    
-    if(req.body.guest_button){
-      userRecord = 0;
-      console.log("Guest login success!")
-        
-      if (req.body.guestName){
-          guestName=req.body.guestName
-          };
-          await buildProvinces();
-          await showGame();
-          res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord });
-  }
-    
-  } catch (error) {
-    console.error("Error handling login", error);
-    res.status(500).send("Internal Server Error"); 
-  }
-
-  console.log("Contenuto del corpo della richiesta Guest:", req.body);
-  provinces = [];
-});
 
 app.post("/login", async (req, res) =>{
   
@@ -240,15 +215,15 @@ app.post("/login", async (req, res) =>{
     score = 0;
     //console.log(number_of_answers);
     
-    if(req.body.provinces){number_of_answers= req.body.provinces;}
+    //if(req.body.provinces){number_of_answers= req.body.provinces;}
 
     //console.log("196: req.body: "+req.body.nickname+", "+req.body.password)
     if(req.body.logIn_button){
-      //console.log("login button pressed!");
+      console.log("Io sono in login. The login button is pressed!");
       loggedIn = await checkLogin(req.body.nickname, req.body.password);
       if(!loggedIn){
-        res.render("index.ejs", {benvenuto: benvenuto})
-        console.log(loggedIn);
+        
+        console.log("Nickname o passwrod errati! Logged in is " + loggedIn);
       }else{
             req.session.user = {
               nickname: req.body.nickname,
@@ -268,9 +243,119 @@ app.post("/login", async (req, res) =>{
     res.status(500).send("Internal Server Error"); 
   }
 
+  console.log("In login: Contenuto del corpo della richiesta:", req.body);
+  provinces = [];
+});
+
+
+app.post("/loginGuest", async (req, res) =>{
+  try {
+    score = 0;
+    //console.log(number_of_answers);
+    
+    
+      userRecord = 0;
+      console.log("Guest login success!")
+        
+      if (req.body.guestName){
+          guestName=req.body.guestName
+          };
+          await buildProvinces();
+          await showGame();
+          res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord });
+  
+    
+  } catch (error) {
+    console.error("Error handling login", error);
+    res.status(500).send("Internal Server Error"); 
+  }
+
+  console.log("Contenuto del corpo della richiesta Guest:", req.body);
+  provinces = [];
+});
+
+async function checkLoginHashed(name, pw) {
+  console.log("Io sono all'inizio di checkLoginAshed. Il nickname è " + name + ". La password è "+pw);
+  try {
+    
+    const db = await pool.connect();
+    const res = await db.query("SELECT * FROM users WHERE userid = $1 AND pwfront = $2;", [name, pw]);
+    console.log(res.rows[0].salt);
+    db.release();
+    if (res.rows.length > 0) {
+      console.log("Io sono in checkLoginHashed. Login corretto. Benvenuto, " + res.rows[0].userid);
+      guestName = name;
+      userRecord = res.rows[0].record;
+      loggedIn = true;
+    } else {
+      benvenuto = "Wrong Nickname or password! Did you already registered?";
+      console.log("Nickname o password errati. Ti sei già registrato?");
+      loggedIn = false;
+    }
+    return loggedIn;
+  } catch (err) {
+    console.error("Error executing query", err.stack);
+    throw err;
+  }
+  
+}
+
+async function takeTheSalt(name, pw) {
+  console.log("Io sono all'inizio di takeTheSalt. Il nickname è " + name + ". La passwrod è "+pw);
+  try {
+    const db = await pool.connect();
+    const res = await db.query("SELECT * FROM users WHERE userid = $1 AND pwfront = $2;", [name, pw]);
+    const [pwfront, salt] = [res.rows[0].pwfront, res.rows[0].salt]
+    return [pwfront, salt];
+  } catch (err) {
+    console.error("Error executing query", err.stack);
+    throw err;
+  }
+  
+}
+
+
+
+
+app.post("/loginHashed", async (req, res) =>{
+  
+  try {
+    score = 0;
+    //console.log(number_of_answers);
+    
+    if(req.body.provinces){number_of_answers= req.body.provinces;}
+
+    //console.log("196: req.body: "+req.body.nickname+", "+req.body.password)
+    if(req.body.logIn_button){
+      console.log("login button pressed!");
+      loggedIn = await checkLoginHashed(req.body.nickname, req.body.password);
+      if(!loggedIn){
+        //res.render("index.ejs", {benvenuto: benvenuto})
+        console.log("Io sono in loginHashed "+loggedIn);
+      }else{
+        const [pwfront, salt] = await takeTheSalt(req.body.nickname, req.body.password);
+        res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord, salt:salt, pwfront: pwfront });
+        
+
+    }        
+  }
+
+  } catch (error) {
+    console.error("Error handling login", error);
+    res.status(500).send("Internal Server Error"); 
+  }
+
   console.log("Contenuto del corpo della richiesta:", req.body);
   provinces = [];
 });
+
+
+
+
+
+
+
+
 
 
 
