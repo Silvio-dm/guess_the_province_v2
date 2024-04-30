@@ -17,8 +17,9 @@
   "author": "",
   "contributors": [],
   "scripts": {
-    "dev": "",
-    "test": ""
+    "start": "node index.js", 
+    "dev": "nodemon index.js", 
+    "test": "mocha" 
   },
   "description": "",
   "dependencies": {
