@@ -86,7 +86,7 @@ function shuffleArray(array) {
 
 
 async function buildProvinces(){
-  //provinces=[];
+  provinces=[];
   
   try {
     
@@ -280,7 +280,6 @@ async function checkLoginHashed(name, pw) {
     
     const db = await pool.connect();
     const res = await db.query("SELECT * FROM users WHERE userid = $1 AND pwfront = $2;", [name, pw]);
-    console.log(res.rows[0].salt);
     db.release();
     if (res.rows.length > 0) {
       console.log("Io sono in checkLoginHashed. Login corretto. Benvenuto, " + res.rows[0].userid);
@@ -331,10 +330,11 @@ app.post("/loginHashed", async (req, res) =>{
       loggedIn = await checkLoginHashed(req.body.nickname, req.body.password);
       if(!loggedIn){
         //res.render("index.ejs", {benvenuto: benvenuto})
-        console.log("Io sono in loginHashed "+loggedIn);
+        console.log("Io sono in loginHashed. loggedIn: "+loggedIn);
+        res.status(200).json({ loggedIn: loggedIn});
       }else{
         const [pwfront, salt] = await takeTheSalt(req.body.nickname, req.body.password);
-        res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord, salt:salt, pwfront: pwfront });
+        res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord, salt:salt, pwfront: pwfront, loggedIn: loggedIn });
         
 
     }        
@@ -456,9 +456,13 @@ app.post("/newgame", async (req, res) =>{
 
 
 app.post("/play_again", async (req, res) =>{
+  console.log("I am req.body.provinces in play_again: "+req.body.provinces)
+  if(req.body.provinces>1){
+  number_of_answers = req.body.provinces;}
 
   await buildProvinces();
-  showGame();
+  await showGame();
+  res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: 0, guestName: guestName, record: userRecord });
   
   
 });
@@ -468,7 +472,7 @@ app.post("/play_again", async (req, res) =>{
 app.post("/submit", async (req, res) =>{
     console.log("Contenuto del corpo della richiesta:", req.body);
     
-    const userAnswer = req.body;  
+    //const userAnswer = req.body;  
     //console.log("userAnswer.button: "+userAnswer.button);
     //console.log(req.session.user);
     
@@ -489,7 +493,7 @@ app.post("/submit", async (req, res) =>{
         provinces=[];
         await buildProvinces();
         await showGame();
-        res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord });
+        res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord, correct:true });
 
         
       }else{
@@ -497,7 +501,7 @@ app.post("/submit", async (req, res) =>{
         score=0;
         message = "Oh, no! The province of "+town_to_guess+" was "+random_province+"! Wanna play again?";
         //console.log(message);
-        res.render("game_again.ejs", { message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord});
+        res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord, correct:false });
         message = "Let's guess the province of this town:";
         //console.log("guestName " + guestName +" - score " + score +" - logged " + loggedIn +" - userRecord " + userRecord);
         //console.log(req.session.user);
@@ -518,14 +522,15 @@ app.post("/submit", async (req, res) =>{
         provinces=[];
         await buildProvinces();
         await showGame();
-        res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord });
+        res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord, correct:true });
         
       }else{
         if(score>userRecord){userRecord=score};
         message = "Oh, no! The province of "+town_to_guess+" was "+random_province+"! Wanna play again?";
         score=0;
         //console.log(message);
-        res.render("game_again.ejs", { message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord});
+        //res.render("game_again.ejs", { message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord});
+        res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord, correct:false });
         message = "Let's guess the province of this town:";
         //console.log("guestName " + guestName +" - score " + score +" - logged " + loggedIn +" - userRecord " + userRecord);
         //console.log("Guest req session user: "+ req.session.user);

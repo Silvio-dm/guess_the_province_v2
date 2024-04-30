@@ -13,11 +13,11 @@ import Game from './game.jsx'
 
 
 function App() {
-  const [gameData, setGameData] = useState({guestName: '', town_to_guess:'', message:'',provinces:[], record:null, score:0}); // Stato per i dati del gioco
+  const [gameData, setGameData] = useState({guestName: '', town_to_guess:'', message:'',provinces:[], record:null, score:0, logged: false}); // Stato per i dati del gioco
   const [page, setPage] = useState('home');
   
 
-  const handlePlayAsGuest = (data) => {
+  const handleLoggedPlay = (data) => {
     setGameData(prevGameData => ({
       ...prevGameData,
       guestName: data.guestName,
@@ -26,12 +26,34 @@ function App() {
       record:data.record,
       town_to_guess:data.town_to_guess,
       score: data.score,
+      logged: true,
 
     })); // Imposta i dati del gioco
     setPage('game'); // Cambia lo stato a 'game'
     
     console.log('Io sono in APP: '+gameData.guestName);
   };
+
+
+const handlePlayAsGuest = (data) => {
+    setGameData(prevGameData => ({
+      ...prevGameData,
+      guestName: data.guestName,
+      message: data.message,
+      provinces: data.provinces,
+      record:data.record,
+      town_to_guess:data.town_to_guess,
+      score: data.score,
+      logged: false
+
+    })); // Imposta i dati del gioco
+    setPage('game'); // Cambia lo stato a 'game'
+    
+    console.log('Io sono in APP: '+gameData.guestName);
+  };
+
+
+
 
   const logoutGame = () =>{
     setPage('home'); // Cambia lo stato a 'home'
@@ -44,11 +66,11 @@ function App() {
   const renderPage = () => {
     switch (page) {
       case 'home':
-        return <Home onPlayAsGuest={handlePlayAsGuest} createAccountPage={createAccountPage}/>;
+        return <Home handleLoggedPlay={handleLoggedPlay} handlePlayAsGuest={handlePlayAsGuest} createAccountPage={createAccountPage}/>;
       case 'create':
         return <CreateAccount logoutGame={logoutGame}/>;
       case 'game':
-        return <Game gameData={gameData} onPlayAsGuest={handlePlayAsGuest} logoutGame={logoutGame}/>;
+        return <Game gameData={gameData} logoutGame={logoutGame} handleLoggedPlay={handleLoggedPlay} handlePlayAsGuest={handlePlayAsGuest}/>;
         
       default:
         return <div>Page not found</div>;

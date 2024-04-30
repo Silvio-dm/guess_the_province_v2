@@ -13,7 +13,7 @@ import CreateButton from './createButton.jsx';
 function Home(props)  {
   const [message, setMessage] = useState('Benvenuto! In questo gioco dovrai indovinare a quale provincia appartiene il Comune italiano che ti verrà mostrato di volta in volta!');
   
-  const handlePlayAsGuest = async (data, passwordClean) => {
+  const handleLoggedPlay = async (data, passwordClean) => {
     console.log("i m in Home: "+data.salt);
     const nickname = data.guestName;
     const password = passwordClean;
@@ -38,13 +38,19 @@ function Home(props)  {
             logIn_button: logIn_button,
           });
 
+    props.handleLoggedPlay(response.data);
+  };
 
+    const handlePlayAsGuest = async (data) => {
+    console.log("i m in Home, in handlePlayAsGuest: "+data);
+    const nickname = data.guestName;
+    const logIn_button = 'logIn_button';
+    const provinces = data.provinces;
 
-
-
-    props.onPlayAsGuest(response.data);
+    props.handlePlayAsGuest(data);
     
   };
+
 
   const createAccountPage = () =>{
     props.createAccountPage();
@@ -61,7 +67,7 @@ function Home(props)  {
       </div>
       <form action="/login" method="POST" id="form" className="form benvenuto">
           <SelectProv />
-          <LoggedButton onPlayAsGuest={handlePlayAsGuest} handleWrongLogin={handleWrongLogin} />
+          <LoggedButton handleLoggedPlay={handleLoggedPlay} handleWrongLogin={handleWrongLogin} />
           <div className="oppure">
             <h3>Oppure </h3>
           </div>

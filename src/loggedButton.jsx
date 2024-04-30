@@ -66,7 +66,12 @@ function LoggedButton(props) {
           console.log('Account login success!');
           // Puoi fare qualcosa con la risposta se necessario
           console.log(response.data);
-          props.onPlayAsGuest(response.data, passwordClean);
+          if(response.data.loggedIn){
+            props.handleLoggedPlay(response.data, passwordClean);
+            }else{
+              props.handleWrongLogin();
+            }
+          
         } catch (error) {
           console.error('Errore durante la richiesta POST:', error);
         }

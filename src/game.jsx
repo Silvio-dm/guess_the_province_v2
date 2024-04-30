@@ -10,7 +10,11 @@ import Record from './Record.jsx';
 function Game(props) {
   const [count, setCount] = useState(0)
 
-  const { guestName, message, provinces, town_to_guess, score, record } = props.gameData || {};
+  const { guestName, message, provinces, town_to_guess, score, record, logged } = props.gameData || {};
+
+  const [play_again, setPlayAgain] = useState("play_again_h");
+  const [town, setTown] = useState('town_to_guess_v');
+  const [logoutButton, setLogoutBUtton] = useState('logoutGameButton_v');
 
 
   async function checkAnswer (prov){
@@ -21,11 +25,28 @@ function Game(props) {
       const response = await axios.post('http://localhost:3000/submit', {
         province: prov.province,
       });
+
+      console.log(response.data.correct);
+
+      if (!response.data.correct){
+        setPlayAgain("play_again_v");
+        setTown('town_to_guess_h');
+        setLogoutBUtton('logoutGameButton_h');
+      }else if(response.data.correct){
+        setPlayAgain("play_again_h")
+        setTown('town_to_guess_v');
+        setLogoutBUtton('logoutGameButton_v');
+      }
     
       console.log('Io sono in checkAnswer: ' + response.data);
       // Chiamiamo la funzione passata come prop con i dati ottenuti dalla risposta axios
       console.log(response.data);
-      props.onPlayAsGuest(response.data);
+      if(logged){
+        props.handleLoggedPlay(response.data);
+      }else{
+        props.handlePlayAsGuest(response.data);
+      }
+      
           
     } catch (error) {
       console.error('Errore durante la richiesta POST:', error);
@@ -45,28 +66,61 @@ function Game(props) {
     }
   };
 
+  async function playAgain (){
+    event.preventDefault(); // Evita il comportamento predefinito del form
+    
+    
+    
+    const provincesSelect = document.getElementById('provinces'); // ID dell'elemento select
+    const selectedProvince = provincesSelect.value;
 
- 
+    const response = await axios.post('http://localhost:3000/play_again', {provinces: selectedProvince});
+
+      setLogoutBUtton('logoutGameButton_v');
+      setPlayAgain("play_again_h");
+      setTown('town_to_guess_v');
+
+    try {
+
+      if(logged){
+        props.handleLoggedPlay(response.data);
+      }else if (!logged){
+        props.handlePlayAsGuest(response.data);
+      }
+
+    } catch (error) {
+      console.error('Errore durante la richiesta GET:', error);
+    }
+  };
+
   if (town_to_guess){
     return (
       <div className="container">
         
-        <form action="/login" method="POST" id="form" className="form benvenuto">
-            <SelectProv />
-            <button type="submit" className="form-submit button-go">Go</button>
-        </form>
+        
         <form action="/logout" method="GET" className="form_game">
-            <button  type="submit" className="form-submit button-go" onClick={logoutGame}>Logout</button>
+            <button  type="submit" className= {logoutButton}  onClick={logoutGame}>Logout</button>
         </form>
   
         <div className="center">
         <h2 >{message}</h2>
+
+            <form action="/play_again" method="POST" className={play_again} >
+            <SelectProv />
+              <button  type="submit" className="form-submit button-go" onClick={playAgain}>Yes</button>
+            </form>
+        
+        
+            <form action="/logout" method="GET" className={play_again}>
+              <button  type="submit" className="form-submit button-go" onClick={logoutGame} >Logout</button>
+            </form>
+        
     
         <section id="cards" className="cards">
           
             <article className="card-item">
               <span>
-                  <h1>{town_to_guess}</h1>
+                  <h1 className={town}>{town_to_guess}</h1>
                   
                 </span>
               
@@ -79,8 +133,7 @@ function Game(props) {
       <div className="container_buttons">
       <form action="/submit" method="POST">
         {provinces.map((province, index) => (
-            <button key={index} className="province_button button-go submit-prov" name="button" value=
-            {province} onClick={() => checkAnswer({province})}
+            <button key={index}  name="button" value={province} onClick={() => checkAnswer({province})}
               ><h3>
               {province}
             </h3>

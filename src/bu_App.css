@@ -11,6 +11,12 @@
   will-change: filter;
   transition: filter 300ms;
 }
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
 
 .benvenuto{
   grid-column-start: 1;
@@ -89,7 +95,6 @@
   margin-top: 80px;
   text-align: center;
 }
-
 .create_account{
   grid-row-start: 2;
   grid-column-start: 3;
@@ -128,7 +133,7 @@
 }
 
 .read-the-docs {
-  color: black;
+  color: #888;
 }
 
 
