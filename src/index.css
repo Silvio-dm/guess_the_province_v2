@@ -35,6 +35,10 @@ h1 {
   line-height: 1.1;
 }
 
+.tiny_h2{
+  margin:0;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -49,10 +53,16 @@ button {
 button:hover {
   border-color: #646cff;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+
+button:active {
+  cursor: pointer;
+  color: black;
+  background-color: white;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
+
 
 @media (prefers-color-scheme: light) {
   :root {

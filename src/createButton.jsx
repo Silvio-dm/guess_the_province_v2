@@ -13,7 +13,7 @@ function CreateButton(props) {
   
 
   return (
-        <form action="/create_account" id="form" className="form benvenuto" method="GET">
+        <form action="/create_account" id="form" className="form" method="GET">
           <div className="create_account">
             <h2>Non sei registrato?</h2>
             <button type="submit" className="province_button" name="createAccount_button" onClick={handleClickCreate}>Registrati!</button>  

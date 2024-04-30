@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import './App.css';
 
 function GuestPlayButton({ onPlayAsGuest }) {
   const handleGuestPlay = async (event) => {
@@ -34,7 +35,7 @@ function GuestPlayButton({ onPlayAsGuest }) {
   return (
     <div className="guest_player">
       <label htmlFor="guestName"><h2>Play as a Guest:</h2></label>
-      <input type="text" id="guestName" name="guestName" placeholder="Your name"></input>      
+      <input type="text" id="guestName" name="guestName" placeholder="Your name" className='field'></input>      
       <button type="submit"  value="Submit" className="province_button" id="guest_button" name="guest_button" onClick={handleGuestPlay}>Play as a Guest:</button>
     </div>
   );

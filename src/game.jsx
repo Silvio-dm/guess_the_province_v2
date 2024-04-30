@@ -95,42 +95,30 @@ function Game(props) {
 
   if (town_to_guess){
     return (
-      <div className="container">
+      <div >
         
         
-        <form action="/logout" method="GET" className="form_game">
+        <form action="/logout" method="GET">
             <button  type="submit" className= {logoutButton}  onClick={logoutGame}>Logout</button>
         </form>
   
-        <div className="center">
-        <h2 >{message}</h2>
+        
+            
 
             <form action="/play_again" method="POST" className={play_again} >
-            <SelectProv />
-              <button  type="submit" className="form-submit button-go" onClick={playAgain}>Yes</button>
+              <SelectProv /><br />
+              <button  type="submit" onClick={playAgain}>Yes</button>
             </form>
-        
-        
             <form action="/logout" method="GET" className={play_again}>
-              <button  type="submit" className="form-submit button-go" onClick={logoutGame} >Logout</button>
+              <button  type="submit" onClick={logoutGame} >Logout</button>
             </form>
-        
-    
-        <section id="cards" className="cards">
+            
           
-            <article className="card-item">
-              <span>
-                  <h1 className={town}>{town_to_guess}</h1>
-                  
-                </span>
-              
-            </article>
-    
-        </section>
-        
-      </div>
 
-      <div className="container_buttons">
+          <h2 className="tiny_h2">{message}</h2>
+          <h1 className={town}>{town_to_guess}</h1>
+
+      <div >
       <form action="/submit" method="POST">
         {provinces.map((province, index) => (
             <button key={index}  name="button" value={province} onClick={() => checkAnswer({province})}

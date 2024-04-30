@@ -95,16 +95,24 @@ function StartCreate({handleCreate}) {
 
   return (
     <div className="container">
+      <form action="/logout" method="GET">
+              <button  type="submit" className="form-submit button-go">Home</button>
+            </form>
+
       <div className="benvenuto" >
       <h1 >Hai quasi finito! Scegli un nickname e una password:</h1>
     </div>
-    <form action="/inserted_newAcc" id="form" className="form benvenuto" method="POST">
-      <div className="logged_player">
+    <form action="/inserted_newAcc" id="form" className="form logged_player" method="POST">
+      <div className="logged_player form">
         <label htmlFor="nickname"><h2>Nickname:</h2></label>
         <input type="text" id="nickname" name="nickname" className="field"></input >
         <label htmlFor="password"><h2>Password:</h2></label>
         <input type="text" id="password" name="password" className="field" ></input >
-        <input type="submit" value="Submit" className="province_button" name="logIn_button" onClick={handleClickCreate}></input >
+        <button type="submit" className="province_button" name="createAccount_button" onClick={handleClickCreate}>Registrati!</button>  
+        
+        
+        
+        
       </div>
     </form>
       

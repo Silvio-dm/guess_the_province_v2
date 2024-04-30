@@ -3,7 +3,7 @@ import './App.css';
 function SelectProv() {
   return (
     
-          <select id="provinces" name="provinces" className="form-select">
+          <select id="provinces" name="provinces"  className="form-select">
             <option value="">Choose the difficulty level:</option>
             <option value="2">2</option>
             <option value="3">3</option>

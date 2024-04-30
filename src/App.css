@@ -28,18 +28,18 @@
 .form {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr;
-  grid-column-gap: 30px;
+  grid-column-gap: 8rem;
   grid-row-gap: 30px;
 }
 
 .form-select{
   background-color: #31363F;
   color: #EEEEEE;
-  grid-column-start: 1;
-  grid-column-end: 3;
+  
   font-size: xx-large;
+  max-height: min-content;
 }
 
 .play_again_h{
@@ -68,14 +68,16 @@
 
 
 .field{
+  font-size: x-large;
   background-color: #31363F;
   color: #EEEEEE;
   border: 1px solid rgb(232, 232, 232);
+  min-height: max-content;
 }
 
 .logged_player{
   grid-row-start: 1;
-  grid-column-start: 3;
+  grid-column-start: 2;
   
   display: flex;
   flex-direction: column;
@@ -92,7 +94,7 @@
 
 .create_account{
   grid-row-start: 2;
-  grid-column-start: 3;
+  grid-column-start: 2;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -101,7 +103,7 @@
 
 .guest_player{
   grid-row-start: 1;
-  grid-column-start: 5;
+  grid-column-start: 3;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -124,7 +126,7 @@
 }
 
 .card {
-  padding: 2em;
+  padding: 1em;
 }
 
 .read-the-docs {

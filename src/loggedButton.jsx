@@ -82,7 +82,7 @@ function LoggedButton(props) {
   };
 
   return (
-    <div className="logged_player">
+    <div className="logged_player form">
       <label htmlFor="nickname"><h2>Nickname:</h2></label>
       <input type="text" id="nickname" name="nickname" className="field"></input><br></br>
       <label htmlFor="password"><h2>Password:</h2></label>

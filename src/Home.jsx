@@ -65,12 +65,10 @@ function Home(props)  {
       <div className="benvenuto-h1">
         <h1>{message}</h1>
       </div>
-      <form action="/login" method="POST" id="form" className="form benvenuto">
+      <form action="/login" method="POST" id="form" className="form">
           <SelectProv />
           <LoggedButton handleLoggedPlay={handleLoggedPlay} handleWrongLogin={handleWrongLogin} />
-          <div className="oppure">
-            <h3>Oppure </h3>
-          </div>
+          
           {/* Passiamo la funzione handlePlayAsGuest come prop al componente GuestPlayButton */}
           <GuestPlayButton onPlayAsGuest={handlePlayAsGuest} />
       </form>
