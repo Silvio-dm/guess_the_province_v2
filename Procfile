@@ -1,2 +1,2 @@
-web: cd my-react-app && npm dev
-server: cd my-react-app/backend && npm start
+web: npm dev
+server: cd backend && npm start
