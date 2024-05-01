@@ -15,12 +15,12 @@
     "react-dom": "^18.2.0",
     "uuid": "^9.0.1",
     "vite": "^5.2.10",
-    "@vitejs/plugin-react": "^4.2.1"
+    "@vitejs/plugin-react": "^4.2.1",
+    "axios": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
-    "axios": "^1.4.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
