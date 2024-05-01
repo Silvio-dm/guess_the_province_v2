@@ -56,7 +56,8 @@ function LoggedButton(props) {
 
 
           // Esegui la tua logica per l'invio dei dati qui
-          const response = await axios.post('http://localhost:3000/loginHashed', {
+          const apiUrl = process.env.NODE_ENV === 'production' ? 'https://guess-the-province-v2-f9b590dd1051.herokuapp.com/' : 'http://localhost:3000';
+          const response = await axios.post(`${apiUrl}/loginHashed`, {
             nickname: nickname,
             password: password,
             provinces: selectedProvince,// Esempio di dati da inviare

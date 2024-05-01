@@ -9,7 +9,11 @@ function AccountConfirmed(props) {
     event.preventDefault(); // Evita il comportamento predefinito del form
     try {
       // Esegui la tua logica per l'invio dei dati qui
-      const response = await axios.get('http://localhost:3000/logout');
+      
+      
+      const apiUrl = process.env.NODE_ENV === 'production' ? 'https://il-tuo-server.herokuapp.com' : 'http://localhost:3000';
+            
+      const response = await axios.get(`${apiUrl}/logout`);
       props.logoutGame(response);
     
       
