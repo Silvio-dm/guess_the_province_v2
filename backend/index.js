@@ -71,6 +71,18 @@ function checkLoggedIn(req, res) {
 */
 
 
+app.get('/favicon.ico', (req, res) => {
+  // Puoi rispondere con una risposta vuota o con un redirect, a seconda delle tue esigenze
+  res.status(204).end(); // Rispondi con un codice di stato 204 (No Content)
+});
+
+app.get('/', (req, res) => {
+  // Puoi rispondere con una risposta vuota o con un redirect, a seconda delle tue esigenze
+  res.status(204).end(); // Rispondi con un codice di stato 204 (No Content)
+});
+
+
+
 function shuffleArray(array) {
   let len = array.length,
       currentIndex;
