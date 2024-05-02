@@ -1,20 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
-//import fs from "fs";
 import session from 'express-session';
 import pg from "pg";
-//import pool from './pool.js';
 import cors from 'cors';
 
-
-
-
-
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
-/*
 const pool = new pg.Pool({
   user: process.env.DB_USER || 'vxctyawcuyyffb',
   host: process.env.DB_HOST || 'ec2-34-241-82-91.eu-west-1.compute.amazonaws.com',
@@ -27,12 +20,6 @@ const pool = new pg.Pool({
     // Potrebbe essere necessario aggiungere il parametro sslmode=require per garantire una connessione crittografata
   }
 });
-*/
-
-
-
-
-
 
 app.use(cors());
 app.use(session({
@@ -44,17 +31,15 @@ app.use(session({
     httpOnly: false // Impedisce l'accesso al cookie di sessione da JavaScript lato client
   }
 }));
+
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-
 
 let town_to_guess = "";
 let random_province = "";
 let provinces = [];
 let number_of_answers = 3;
-let benvenuto = "Benvenuto! In questo gioco dovrai indovinare a quale provincia appartiene il Comune italiano che ti verrà mostrato di volta in volta!"
 let message = "Let's guess the province of this town:";
 var score = 0;
 
@@ -63,18 +48,6 @@ var guestName = "Your";
 let loggedIn = false;
 var userRecord = 0;
 let users = []
-
-/*
-// Funzione per verificare lo stato di login dell'utente
-function checkLoggedIn(req, res) {
-  if (!loggedIn) {
-    // Se l'utente non è loggato, reindirizzalo alla pagina di login
-    res.render("index.ejs", { benvenuto: "Effettua il login per giocare!" });
-    return false;
-  }
-  return true;
-}
-*/
 
 
 app.get('/api/wakeup', (req, res) => {
@@ -91,8 +64,6 @@ app.get('/', (req, res) => {
   res.status(204).end(); // Rispondi con un codice di stato 204 (No Content)
 });
 
-
-
 function shuffleArray(array) {
   let len = array.length,
       currentIndex;
@@ -105,27 +76,24 @@ function shuffleArray(array) {
   return array;
 }
 
-
-
 async function buildProvinces(){
   provinces=[];
-  
+ 
   try {
     
-                //get the italian provinces' list
+    //get the italian provinces' list
     const response = await axios.get("https://axqvoqvbfjpaamphztgd.functions.supabase.co/province");
     const result = response.data;
-                //get a random province and push it in the array
+    //get a random province and push it in the array
     random_province = result[(Math.floor(Math.random() * result.length))].nome;
     provinces.push(random_province);
     //git1
-                //get 9 more random provinces and push them in the array
+    //get 9 more random provinces and push them in the array
     while(provinces.length<number_of_answers){
       let temp_prov = result[(Math.floor(Math.random() * result.length))].nome;
       if (!provinces.includes(temp_prov)){
         provinces.push(temp_prov)
       }
-    
     }
     console.log("I am in buildProvinces: "+random_province);
     //console.log("Province array: "+provinces);
@@ -138,7 +106,6 @@ async function buildProvinces(){
     console.error("Failed to make request:", error.message);
     //res.render("game.ejs", {      error: error.message,    });  
   }
-
 }
 
 async function showGame(){
@@ -162,48 +129,9 @@ async function showGame(){
 
 }
 
-/*
-async function readDb(){
-  
-  const data = fs.readFileSync(dbName, "utf-8");
-  users= JSON.parse(data);
-  console.log("users[0].name in readDb func: "+users[0].name)
-
-}
-*/
 
 
-/*
-app.get("/", async (req, res) => {
-  benvenuto = "Benvenuto! In questo gioco dovrai indovinare a quale provincia appartiene il Comune italiano che ti verrà mostrato di volta in volta!"
-  await readDb();
-  res.redirect("http://localhost:5173/");
-});
-*/
 
-
-/*
-function checkLogin(name, pw){
-   db.query("SELECT * FROM users WHERE userid = $1 AND pwhash = $2;", [name, pw], (err, res) => {
-    
-    if (err) {
-      console.error("Error executing query", err.stack);
-    }else{
-      if(res.rows.length>0){
-      console.log("Login corretto. Benvenuto, "+res.rows[0].userid);
-      guestName = name;
-      loggedIn= true;
-      console.log(loggedIn);
-      
-    } else{
-      benvenuto="Wrong Nickname or password! Did you already registered?";
-      console.log("Nickname o password errati. Ti sei già registrato?");
-      loggedIn= false;}}
-    db.end();
-  });
-}
-
-*/
 async function checkLogin(name, pw) {
   console.log("Io sono all'inizio di checkLogin. Il nickname è " + name + ". La password è "+pw);
   try {
@@ -229,10 +157,7 @@ async function checkLogin(name, pw) {
   
 }
 
-
-
 app.post("/login", async (req, res) =>{
-  
   try {
     score = 0;
     //console.log(number_of_answers);
@@ -274,10 +199,8 @@ app.post("/loginGuest", async (req, res) =>{
   try {
     score = 0;
     //console.log(number_of_answers);
-    
-    
-      userRecord = 0;
-      console.log("Guest login success!")
+    userRecord = 0;
+    console.log("Guest login success!")
         
       if (req.body.guestName){
           guestName=req.body.guestName
@@ -286,12 +209,10 @@ app.post("/loginGuest", async (req, res) =>{
           await showGame();
           res.status(200).json({ message:message, town_to_guess: town_to_guess, provinces: provinces, score: score, guestName: guestName, record: userRecord });
   
-    
   } catch (error) {
     console.error("Error handling login", error);
     res.status(500).send("Internal Server Error"); 
   }
-
   console.log("Contenuto del corpo della richiesta Guest:", req.body);
   provinces = [];
 });
@@ -336,8 +257,6 @@ async function takeTheSalt(name, pw) {
 }
 
 
-
-
 app.post("/loginHashed", async (req, res) =>{
   
   try {
@@ -372,40 +291,11 @@ app.post("/loginHashed", async (req, res) =>{
 });
 
 
-
-
-
-
-
-
-
-
-
-
 app.get("/create_account", async (req, res) =>{
   score = 0;
   console.log(req.body);
-  
-  
 });
 
-
-/*
-function writeDbNewUser(obj, dbName="./db/users.json"){
-
-  if (!obj){return console.log("Please provide data to save")};
-  
-  try {
-    fs.writeFileSync(dbName, JSON.stringify(users));
-
-    return console.log("Save succefull");
-    
-  } catch (error) {
-    return console.log("Save failed");
-    
-  }
-}
-*/
 
 app.post("/inserted_newAcc", async (req, res) =>{
   let newUser ={};
@@ -493,21 +383,12 @@ app.post("/play_again", async (req, res) =>{
 
 app.post("/submit", async (req, res) =>{
     console.log("Contenuto del corpo della richiesta:", req.body);
-    
-    //const userAnswer = req.body;  
-    //console.log("userAnswer.button: "+userAnswer.button);
-    //console.log(req.session.user);
-    
-    //https://javascript.plainenglish.io/javascript-remove-all-whitespace-from-string-ece685d0ec33
-
-    //sessione di gioco di utente loggato
     if(loggedIn){
       if(req.body.province.replace(/\s/g, "")===random_province.replace(/\s/g, "")){
         score++;
         if(score>userRecord){
           userRecord=score 
-          //req.session.user.record=score;
-          
+
         };
   
         message = "Correct! The province of "+town_to_guess+" is "+random_province+"! Let's try with the next one!";
@@ -565,27 +446,11 @@ app.post("/submit", async (req, res) =>{
 });
 
 
-/*function writeDb_Logout(obj, dbName="./db/users.json"){
-
-  if (!obj){return console.log("Please provide data to save")};
-  
-  try {
-    fs.writeFileSync(dbName, JSON.stringify(users));
-
-    return console.log("Save succefull")
-    
-  } catch (error) {
-    return console.log("Save failed")
-    
-  }
-}
-*/
-
 async function updateDb(){
   const db = await pool.connect();
   await db.query("UPDATE users SET record = $1 WHERE userid= $2;", [userRecord, guestName]);
   db.release(); 
-}
+};
 
 
 app.get("/logout", async (req, res) =>{
