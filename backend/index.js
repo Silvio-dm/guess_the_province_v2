@@ -9,10 +9,10 @@ import cors from 'cors';
 
 
 const pool = new pg.Pool({
-  user: process.env.DB_USER || 'vxctyawcuyyffb',
-  host: process.env.DB_HOST || 'ec2-34-241-82-91.eu-west-1.compute.amazonaws.com',
-  database: process.env.DB_NAME || 'd7o81qbcn9kgeo',
-  password: process.env.DB_PASSWORD ||'5455fb78a4bf6c5f5dd0f1b9d7ea87f7e704e8277fb56ffab7726ee069be3f5f',
+  user: process.env.DB_USER || 'cqebyiouygrjgq',
+  host: process.env.DB_HOST || 'ec2-52-51-248-250.eu-west-1.compute.amazonaws.com',
+  database: process.env.DB_NAME || 'd8r4v09vhauooc',
+  password: process.env.DB_PASSWORD ||'ebf088a1b7f75cedfc16d35b0f0d3771a0d0df1c90c1b38b16f9614739640fed',
   port: process.env.DB_PORT || 5432,
   ssl: {
     rejectUnauthorized: false, // Per impostazione predefinita, il certificato SSL viene verificato. Se non si dispone del certificato radice del certificato SSL del database,
