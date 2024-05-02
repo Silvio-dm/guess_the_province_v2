@@ -122,7 +122,7 @@ function Game(props) {
       <div >
       <form action="/submit" method="POST">
         {provinces.map((province, index) => (
-            <button key={index}  name="button" value={province} onClick={() => checkAnswer({province})}
+            <button className="button_prov" key={index}  name="button" value={province} onClick={() => checkAnswer({province})}
               ><h3>
               {province}
             </h3>
