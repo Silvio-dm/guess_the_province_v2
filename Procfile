@@ -1,2 +1,2 @@
 web: npm run dev
-server: cd backend && npm start
+server: npm start
