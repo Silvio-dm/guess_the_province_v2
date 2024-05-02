@@ -14,7 +14,7 @@ import cors from 'cors';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
+/*
 const pool = new pg.Pool({
   user: process.env.DB_USER || 'vxctyawcuyyffb',
   host: process.env.DB_HOST || 'ec2-34-241-82-91.eu-west-1.compute.amazonaws.com',
@@ -27,7 +27,7 @@ const pool = new pg.Pool({
     // Potrebbe essere necessario aggiungere il parametro sslmode=require per garantire una connessione crittografata
   }
 });
-
+*/
 
 
 
