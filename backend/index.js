@@ -126,7 +126,7 @@ async function buildProvinces(){
 
   } catch (error) {
     console.error("Failed to make request:", error.message);
-    res.render("game.ejs", {      error: error.message,    });  
+    //res.render("game.ejs", {      error: error.message,    });  
   }
 
 }
@@ -235,7 +235,7 @@ app.post("/login", async (req, res) =>{
       loggedIn = await checkLogin(req.body.nickname, req.body.password);
       if(!loggedIn){
         
-        console.log("Nickname o passwrod errati! Logged in is " + loggedIn);
+        console.log("Nickname o password errati! Logged in is " + loggedIn);
       }else{
             req.session.user = {
               nickname: req.body.nickname,
