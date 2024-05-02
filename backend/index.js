@@ -6,7 +6,7 @@ import pg from "pg";
 import cors from 'cors';
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 const pool = new pg.Pool({
   user: process.env.DB_USER || 'vxctyawcuyyffb',
