@@ -42,6 +42,7 @@ let provinces = [];
 let number_of_answers = 3;
 let message = "Let's guess the province of this town:";
 var score = 0;
+let benvenuto = "Benvenuto! In questo gioco dovrai indovinare a quale provincia appartiene il Comune italiano che ti verrà mostrato di volta in volta!"
 
 var guestName = "Your";
 //var userIndex = 0;
