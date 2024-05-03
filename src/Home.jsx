@@ -27,7 +27,7 @@ function Home(props)  {
     function generateHash(password, salt) {
       const hashedPassword = CryptoJS.PBKDF2(password, salt, { keySize: 128/32 }).toString(CryptoJS.enc.Hex);
       return hashedPassword;
-    }
+    };
 
     const hashedPassword = await generateHash(password, salt);
     const apiUrl = process.env.NODE_ENV === 'production' ? 'https://guess-the-province-v2-f9b590dd1051.herokuapp.com/' : 'http://localhost:3000';
@@ -58,7 +58,7 @@ function Home(props)  {
   }
 
   const handleWrongLogin = () => {
-    setMessage('Wrong Nickname or password! Did you already registered?')
+    setMessage('Wrong Nickname or password! Did you already registered?');
   }
 
   return (
@@ -75,7 +75,7 @@ function Home(props)  {
       </form>
         <CreateButton createAccountPage={createAccountPage}/>
   </div>
-  )
+  );
 }
 
 export default Home;

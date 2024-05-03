@@ -84,8 +84,7 @@ const handlePlayAsGuest = (data) => {
 
   return (
     <div>
-      
-      {renderPage()}
+          {renderPage()}
     </div>
   );
 }
