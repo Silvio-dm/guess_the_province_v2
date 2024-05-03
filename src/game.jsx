@@ -101,22 +101,18 @@ function Game(props) {
         
         <form action="/logout" method="GET">
             <button  type="submit" className= {logoutButton}  onClick={logoutGame}>Logout</button>
-        </form>
-  
-        
-            
+        </form>       
 
-            <form action="/play_again" method="POST" className={play_again} >
+          <h2 className="tiny_h2">{message}</h2>
+
+          <form action="/play_again" method="POST" className={play_again} >
               <SelectProv /><br />
               <button  type="submit" onClick={playAgain}>Yes</button>
             </form>
             <form action="/logout" method="GET" className={play_again}>
               <button  type="submit" onClick={logoutGame} >Logout</button>
             </form>
-            
-          
 
-          <h2 className="tiny_h2">{message}</h2>
           <h1 className={town}>{town_to_guess}</h1>
 
       <div >
