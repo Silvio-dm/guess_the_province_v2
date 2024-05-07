@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 
 app.get('/assets/index-JejpZmKg.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
-  res.sendFile(path.join(__dirname, '../dist/assets/index-JejpZmKg.js'));
+  res.sendFile(path.join(__dirname, '../dist/assets/index-JejpZmKg-.js'));
 });
 
 app.get('/assets/index-mgl4OsFu.css', (req, res) => {
