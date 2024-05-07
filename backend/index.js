@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-app.get('/assets/index-G9Lm1YYq.js', (req, res) => {
+app.get('/assets/index-h6JeJ9eA.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.sendFile(path.join(__dirname, '../dist/assets/index-G9Lm1YYq.js'));
 });
