@@ -31,6 +31,19 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
+app.get('/assets/index-JejpZmKg.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(path.join(__dirname, 'dist', 'assets', 'index-JejpZmKg.js'));
+});
+
+app.get('/assets/index-mgl4OsFu.css', (req, res) => {
+  res.setHeader('Content-Type', 'text/css');
+  res.sendFile(path.join(__dirname, 'dist', 'assets', 'index-mgl4OsFu.css'));
+});
+
+
+
+
 app.use(cors());
 app.use(session({
   secret: 'your-secret-key', // Chiave segreta per firmare il cookie della sessione
