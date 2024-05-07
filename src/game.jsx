@@ -58,7 +58,8 @@ function Game(props) {
     event.preventDefault(); // Evita il comportamento predefinito del form
     try {
       // Esegui la tua logica per l'invio dei dati qui
-      const response = await axios.get('http://localhost:3000/logout');
+      const apiUrl = process.env.NODE_ENV === 'production' ? 'https://guess-the-province-v2-f9b590dd1051.herokuapp.com' : 'http://localhost:3000';
+      const response = await axios.get(`${apiUrl}/logout`);
       props.logoutGame(response);
     
       
@@ -75,7 +76,8 @@ function Game(props) {
     const provincesSelect = document.getElementById('provinces'); // ID dell'elemento select
     const selectedProvince = provincesSelect.value;
 
-    const response = await axios.post('http://localhost:3000/play_again', {provinces: selectedProvince});
+    const apiUrl = process.env.NODE_ENV === 'production' ? 'https://guess-the-province-v2-f9b590dd1051.herokuapp.com' : 'http://localhost:3000';
+    const response = await axios.post(`${apiUrl}/play_again`, {provinces: selectedProvince});
 
       setLogoutBUtton('logoutGameButton_v');
       setPlayAgain("play_again_h");
