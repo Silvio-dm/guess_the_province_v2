@@ -31,9 +31,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-app.get('/assets/index-JejpZmKg-.js', (req, res) => {
+app.get('/assets/index-Cq3qyCp-.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
-  res.sendFile(path.join(__dirname, '../dist/assets/index-JejpZmKg-.js'));
+  res.sendFile(path.join(__dirname, '../dist/assets/index-Cq3qyCp-.js'));
 });
 
 app.get('/assets/index-mgl4OsFu.css', (req, res) => {
