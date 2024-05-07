@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import React, { useEffect } from 'react';
-import axios from 'axios';
+//import React, { useEffect } from 'react';
+//import axios from 'axios';
 import './App.css';
 
 //import GuestPlayButton from './guestButton.jsx'; // Importa il componente GuestPlayButton
@@ -15,13 +15,7 @@ import Game from './game.jsx'
 
 function App() {
 
-  const apiUrl = process.env.NODE_ENV === 'production' ? 'https://guess-the-province-v2-f9b590dd1051.herokuapp.com/' : 'http://localhost:3000';
- 
- 
-
-
-
-
+  
   const [gameData, setGameData] = useState({guestName: '', town_to_guess:'', message:'',provinces:[], record:null, score:0, logged: false}); // Stato per i dati del gioco
   const [page, setPage] = useState('home');
   
