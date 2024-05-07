@@ -4,6 +4,7 @@ import axios from "axios";
 import session from 'express-session';
 import pg from "pg";
 import cors from 'cors';
+import path from 'path';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,11 @@ const pool = new pg.Pool({
     // è possibile disabilitare la verifica impostando questa opzione su false.
     // Potrebbe essere necessario aggiungere il parametro sslmode=require per garantire una connessione crittografata
   }
+});
+
+// Serve il frontend React
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.use(cors());
